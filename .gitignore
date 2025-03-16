@@ -1,57 +1,7 @@
-.DS_Store
-Angel_UNM_14_2_4.ppt
-Angel_UNM_14_2_5.ppt
-Angel_UNM_14_3_1.ppt
-Angel_UNM_14_3_2.ppt
-Angel_UNM_14_3_3.ppt
-Angel_UNM_14_3_4.ppt
-Angel_UNM_14_3_5.ppt
-Angel_UNM_14_3_6.ppt
-Angel_UNM_14_6_1 (1).ppt
-Angel_UNM_14_6_2 (1).ppt
-Angel_UNM_14_6_3.ppt
-Angel_UNM_14_6_4.ppt
-Angel_UNM_14_6_5.ppt
-Angel_UNM_14_7_1.ppt
-Angel_UNM_14_7_2.ppt
-Angel_UNM_14_7_3.ppt
-Angel_UNM_14_7_4.ppt
-Angel_UNM_14_7_5.ppt
-Angel_UNM_14_8_1.ppt
-Angel_UNM_14_8_2.ppt
-Angel_UNM_14_8_3.ppt
-Angel_UNM_14_8_4.ppt
-Angel_UNM_14_9_1.ppt
-Angel_UNM_14_9_2 (1).ppt
-Angel_UNM_14_9_2.ppt
-Angel_UNM_14_9_3.ppt
-Angel_UNM_14_9_4.ppt
-Angel_UNM_14_9_5.ppt
-Angel_UNM_14_9_6.ppt
-Angel_UNM_14_10_1.ppt
-Angel_UNM_14_10_2.ppt
-Angel_UNM_14_10_3.ppt
-Angel_UNM_14_10_4.ppt
-Angel_UNM_14_10.5.ppt
-Angel_UNM_14_13_1_lee.ppt
-Angel_UNM_14_13_2.ppt
-Angel_UNM_14_13_3lee.ppt
-Angel_UNM_14_13_4_lee.ppt
-HW1.zip
-HW2.zip
-HW3.zip
-HW4.zip
-HW5.zip
-TEST
-TEST (1).zip
-TEST.zip
-HW1/.DS_Store
-HW1/Common/.DS_Store
-HW1/Common/angelCommon.zip
-HW2/Common/angelCommon.zip
-SourceCode/Common/angelCommon.zip
-HW2/Common/README.txt
-HW2/README.md
-SourceCode/Common/README.txt
-SourceCode/angelChap2.zip
-SourceCode/angelChap3.zip
+*.zip
+*.ppt
+*.DS_Store
+*.txt
+SourceCode/
+HW_final/
+Test (1)/

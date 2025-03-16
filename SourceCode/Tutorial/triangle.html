@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HW1</title>
+    <style>
+        #demo-canvas{
+            width: 600px;
+            height: 600px;
+
+            /* if webGL isn't drawing to the whole canvas or there's unexpected transparency */
+            background-color: #da6052;
+        }
+        #error-box{
+            color: #da6052;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="demo-canvas"></canvas>
+
+    <div id="error-box">
+        <span id="error-box-title">Error message, if any, go in here.</span>
+    </div>
+
+    <script src="triangle.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <canvas id="gl-canvas" width="512" height="512">
+        Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+// assume both position and normal are in homogeneous form
+
+attribute vec4 vPosition;
+attribute vec3 vNormal;
+attribute vec2 vTexCoord;
+
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat3 normalMatrix;
+uniform vec4 lightPosition;
+uniform mat4 matrixShadow; // matrix for shadow 
+
+varying vec4 lightView_Position; // light view position 
+varying vec2 fTexCoord;
+varying vec3 N, L, E;
+
+const mat4 texUnitConverter = mat4(
+    0.5, 0.0, 0.0, 0.0, 
+    0.0, 0.5, 0.0, 0.0, 
+    0.0, 0.0, 0.5, 0.0, 
+    0.5, 0.5, 0.5, 1.0);
+
+void
+main()
+{
+
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    fTexCoord = vTexCoord;
+    lightView_Position = texUnitConverter * matrixShadow * vPosition;
+
+
+    // lights 
+    vec3 pos = (modelViewMatrix * vPosition).xyz;
+    if(lightPosition.w == 0.0) L = normalize(lightPosition.xyz);
+    else L = normalize(lightPosition.xyz - pos);
+
+    E = -normalize(pos);
+    N = (normalMatrix * vNormal.xyz);
+
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+
+varying vec2 fTexCoord;
+varying vec4 lightView_Position;
+varying vec3 N, L, E;
+
+
+uniform vec4 ambientProduct;
+uniform vec4 diffuseProduct;
+uniform vec4 specularProduct;
+uniform float shininess;
+
+
+uniform vec4 u_colorMult;
+uniform sampler2D shadow_texture;
+uniform sampler2D g_texture;
+uniform float u_bias; 
+
+void
+main()
+{
+    // light colors I 
+    // I = ka * Ia + kd * dot(N, H) * Id + ks * max(pow(dot(L, E)), shininess) * Is
+    vec4 fColor; 
+    vec3 H = normalize(L + E);
+    vec4 ambient = ambientProduct; 
+
+    float Kd = max(dot(L, N), 0.0); // diffuse = object dot light source
+    vec4 diffuse = Kd * diffuseProduct;
+
+    float Ks = pow(max(dot(N, H), 0.0), shininess);  // specular = object * reflection halfway
+    vec4 specular = Ks * specularProduct;
+
+    if(dot(L, N) < 0.0) specular = vec4(0.0, 0.0, 0.0, 1.0); // not facing the light 
+
+
+    // shadow depth 
+    vec3 projectedTexcoord = lightView_Position.xyz / lightView_Position.w;
+    float currentDepth = projectedTexcoord.z;
+  
+    bool inRange =
+        projectedTexcoord.x >= 0.0 &&
+        projectedTexcoord.x <= 1.0 &&
+        projectedTexcoord.y >= 0.0 &&
+        projectedTexcoord.y <= 1.0;
+  
+    // the 'r' channel has the depth values
+    float projectedDepth = texture2D(shadow_texture, projectedTexcoord.xy).r;
+    float shadowLight = (inRange && projectedDepth <= currentDepth + 0.005) ? 0.5 : 1.0;
+    fColor = ambient + (diffuse + specular) * shadowLight;
+  
+    vec4 texColor = texture2D(g_texture, fTexCoord) ;
+    // float projectedAmount = inRange ? 1.0 : 0.0;
+    gl_FragColor = vec4(texColor.rgb * fColor.rgb * shadowLight, texColor.a);
+}
+</script>
+<script id="shadow-vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 a_position;
+    uniform mat4 mvp;
+
+    void main(){
+        gl_Position =  mvp * a_position;
+    }
+</script>
+<script id="shadow-fragment-shader" type="x-shader/x-fragment">
+    precision highp float;
+    
+    void main(){
+      gl_FragColor = vec4(gl_FragCoord.z);
+    }
+</script>
+<p> </p>
+
+<p> </p>
+
+<div class="slider">
+    <div>x</div>
+    <input type="range" id="x-light" min="-10" max="10", value="2" step="0.001">
+</div>
+<div class="slider">
+    <div>y</div>
+    <input type="range" id="y-light" min="-10" max="10", value="2" step="0.001">
+</div>
+<div class="slider">
+    <div>z</div>
+    <input type="range" id="z-light" min="-10" max="10", value="2" step="0.001">
+</div>
+
+<div class="slider">
+    <div>r</div>
+    <input type="range" id="d-light" min="5" max="200", value="20" step="0.0001">
+</div>
+<p> </p>
+<button id="btn">Mirror</button>
+<p></p>
+
+<script type="text/javascript" src="Common/webgl-utils.js"></script>
+<script type="text/javascript" src="Common/initShaders.js"></script>
+
+<script type="text/javascript" src="Common/MV.js"></script>
+<script type="text/javascript" src="hw5.js"></script>
+
+<body>
+
+</body>
+</html>
